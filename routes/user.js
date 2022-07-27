@@ -135,4 +135,41 @@ router.patch("/update", (req, res) => {
   });
 });
 
+router.get("/checkToken", (req, res) => {
+  return res.status(200).json({ message: "Token is valid" });
+});
+
+router.post("/changePassword", (req, res) => {
+  const user = req.body;
+  let query = "select email,password from user where email=?";
+  connection.query(query, [user.email], (err, results) => {
+    if (!err) {
+      if (results[0]?.length <= 0 || !results[0]) {
+        return res.status(401).json({ message: "Email not found." });
+      } else {
+        if (results[0].password === user.oldPassword) {
+          query = "update user set password=? where email=?";
+          connection.query(
+            query,
+            [user.newPassword, user.email],
+            (error, _results) => {
+              if (!error) {
+                return res
+                  .status(200)
+                  .json({ message: "Password updated successfully" });
+              } else {
+                return res.status(500).json(error);
+              }
+            }
+          );
+        } else {
+          return res.status(401).json({ message: "Old password is incorrect" });
+        }
+      }
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+});
+
 module.exports = router;
