@@ -8,7 +8,7 @@ const {
   login,
   forgotPassword,
   getUsers,
-  updateStatus,
+  activeAccount,
   checkToken,
   changePassword,
 } = require("../controllers/user");
@@ -18,7 +18,7 @@ router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/change-password", authenticateToken, changePassword);
 
-router.patch("/update", authenticateToken, updateStatus);
+router.patch("/active-account", authenticateToken, activeAccount);
 
 router.get("/get", authenticateToken, checkRole, getUsers);
 router.get("/check-token", checkToken);

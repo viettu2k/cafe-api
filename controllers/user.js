@@ -118,7 +118,7 @@ const getUsers = (req, res) => {
   });
 };
 
-const updateStatus = (req, res) => {
+const activeAccount = (req, res) => {
   const user = req.body;
   let query = "update user set status=? where email=?";
   connection.query(query, [user.status, user.email], (err, results) => {
@@ -177,7 +177,7 @@ module.exports = {
   login,
   forgotPassword,
   getUsers,
-  updateStatus,
+  activeAccount,
   checkToken,
   changePassword,
 };
