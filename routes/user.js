@@ -110,7 +110,7 @@ router.post("/forgot-password", (req, res) => {
 
 router.get("/get", (req, res) => {
   let query =
-    "select id, name, email, contact, status, from user where role='user'";
+    "select id, name, email, contact, status from user where role='user'";
   connection.query(query, (err, results) => {
     if (!err) {
       return res.status(200).json(results);
