@@ -120,4 +120,19 @@ router.get("/get", (req, res) => {
   });
 });
 
+router.patch("/update", (req, res) => {
+  const user = req.body;
+  let query = "update user set status=? where email=?";
+  connection.query(query, [user.status, user.email], (err, results) => {
+    if (!err) {
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ message: "User email does not exist" });
+      }
+      return res.status(200).json({ message: "User updated successfully" });
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+});
+
 module.exports = router;
