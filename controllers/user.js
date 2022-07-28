@@ -44,7 +44,7 @@ const login = (req, res) => {
           .json({ message: "Incorrect username or password" });
       } else if (results[0].status === "false") {
         return res.status(401).json({ message: "Wait for Admin approval" });
-      } else if (results[0].password === user.password) {
+      } else if (results[0].password === password) {
         const response = { email: results[0].email, role: results[0].role };
         const acessToken = jwt.sign(response, process.env.ACCESS_TOKEN, {
           expiresIn: "8h",

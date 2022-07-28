@@ -8,7 +8,7 @@ const {
   updateCategory,
 } = require("../controllers/category");
 
-router.post("./add", authenticateToken, checkRole, addCategory);
+router.post("/add", authenticateToken, checkRole, addCategory);
 
 router.patch("/update", authenticateToken, checkRole, updateCategory);
 
