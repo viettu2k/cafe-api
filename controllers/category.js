@@ -1,6 +1,6 @@
 const connection = require("../connection");
 
-const addCategory = (req, res, next) => {
+const addCategory = (req, res) => {
   let { name } = req.body;
   let query = "insert into category (name) values (?)";
   connection.query(query, [name], (err, results) => {
@@ -12,7 +12,7 @@ const addCategory = (req, res, next) => {
   });
 };
 
-const getCategories = (req, res, next) => {
+const getCategories = (req, res) => {
   let query = "select * from category order by name";
   connection.query(query, (err, results) => {
     if (!err) {
@@ -23,7 +23,7 @@ const getCategories = (req, res, next) => {
   });
 };
 
-const updateCategory = (req, res, next) => {
+const updateCategory = (req, res) => {
   let { name, id } = req.body;
   let query = "update category set name=? where id=?";
   connection.query(query, [name, id], (err, results) => {
