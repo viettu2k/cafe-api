@@ -7,7 +7,7 @@ const uuid = require("uuid");
 
 const generateReport = (req, res) => {
   const generateUuid = uuid.v1();
-  const { name, email, contact, paymentMethod, totalAmount, productDetails } =
+  const { name, email, contact, paymentMethod, total, productDetails } =
     req.body;
   const productDetailsReport = JSON.parse(productDetails);
   let query =
@@ -20,7 +20,7 @@ const generateReport = (req, res) => {
       email,
       contact,
       paymentMethod,
-      totalAmount,
+      total,
       productDetails,
       res.locals.email,
     ],
@@ -32,18 +32,18 @@ const generateReport = (req, res) => {
             productDetails: productDetailsReport,
             name,
             email,
-            contacNumber: contact,
+            contact,
             paymentMethod,
-            totalAmount,
+            total,
           },
-          (error, _results) => {
+          (error, data) => {
             if (!error) {
               pdf
                 .create(data)
                 .toFile(
                   "./generated_pdf/" + generateUuid + ".pdf",
-                  (error_, data) => {
-                    if (error_) {
+                  (err, data) => {
+                    if (err) {
                       return res.status(500).json(error_);
                     } else {
                       return res.status(200).json({
@@ -53,6 +53,7 @@ const generateReport = (req, res) => {
                   }
                 );
             } else {
+              console.log(error);
               return res.status(500).json(error);
             }
           }
