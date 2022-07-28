@@ -6,12 +6,17 @@ const {
   addProduct,
   getProducts,
   getByCategoryId,
+  updateProduct,
 } = require("../controllers/product");
 
 router.post("/add", authenticateToken, checkRole, addProduct);
 
+router.patch("/update", authenticateToken, checkRole, updateProduct);
+
 router.get("/get", authenticateToken, getProducts);
 router.get("/getByCategory/:id", authenticateToken, getByCategoryId);
 router.get("/getById/:id", authenticateToken, getByCategoryId);
+
+router.delete("/delete/:id", authenticateToken, checkRole, deleteProduct);
 
 module.exports = router;

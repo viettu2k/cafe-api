@@ -53,4 +53,48 @@ const getById = (req, res) => {
   });
 };
 
-module.exports = { addProduct, getProducts, getByCategoryId, getById };
+const updateProduct = (req, res) => {
+  let { id, name, categoryId, description, price } = req.body;
+  let query =
+    "update product set name=?, categoryId=?, description=?, price=? where id=?";
+  connection.query(
+    query,
+    [name, categoryId, description, price, id],
+    (err, results) => {
+      if (!err) {
+        if (results.affectedRow === 0) {
+          return res.status(404).json({ message: "Product is does not found" });
+        }
+        return res
+          .status(200)
+          .json({ message: "Product updated successfully" });
+      } else {
+        return res.status(500).json(err);
+      }
+    }
+  );
+};
+
+const deleteProduct = (req, res) => {
+  const { id } = req.params;
+  let query = "delete from product where id = ?";
+  connection.query(query, [id], (err, results) => {
+    if (!err) {
+      if (results.affectedRow === 0) {
+        return res.status(404).json({ message: "Product is does not found" });
+      }
+      return res.status(200).json({ message: "Product deleted successfully" });
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};
+
+module.exports = {
+  addProduct,
+  getProducts,
+  getByCategoryId,
+  getById,
+  updateProduct,
+  deleteProduct,
+};
