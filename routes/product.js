@@ -7,6 +7,7 @@ const {
   getProducts,
   getByCategoryId,
   updateProduct,
+  deleteProduct,
 } = require("../controllers/product");
 
 router.post("/add", authenticateToken, checkRole, addProduct);
