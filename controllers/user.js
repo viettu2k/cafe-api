@@ -4,16 +4,16 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const register = (req, res) => {
-  let user = req.body;
+  let { email, name, contact, password } = req.body;
   let query = "select email,password,role,status from user where email=?";
-  connection.query(query, [user.email], (err, results) => {
+  connection.query(query, [email], (err, results) => {
     if (!err) {
       if (results.length <= 0) {
         query =
           "insert into user(name,contact,email,password,status,role) values(?,?,?,?,'false', 'user')";
         connection.query(
           query,
-          [user.name, user.contact, user.email, user.password],
+          [name, contact, email, password],
           (error, _results) => {
             if (!error) {
               return res
@@ -34,11 +34,11 @@ const register = (req, res) => {
 };
 
 const login = (req, res) => {
-  const user = req.body;
+  const { email, password } = req.body;
   let query = "select email,password,status from user where email=?";
-  connection.query(query, [user.email], (err, results) => {
+  connection.query(query, [email], (err, results) => {
     if (!err) {
-      if (results[0]?.length <= 0 || results[0]?.password !== user.password) {
+      if (results[0]?.length <= 0 || results[0]?.password !== password) {
         return res
           .status(401)
           .json({ message: "Incorrect username or password" });
@@ -70,9 +70,9 @@ const transporter = nodemailer.createTransport({
 });
 
 const forgotPassword = (req, res) => {
-  const user = req.body;
+  const { email } = req.body;
   let query = "select email,password from user where email=?";
-  connection.query(query, [user.email], (err, results) => {
+  connection.query(query, [email], (err, results) => {
     if (!err) {
       if (results[0]?.length <= 0 || !results[0]) {
         return res.status(401).json({ message: "Email not found." });
@@ -119,9 +119,9 @@ const getUsers = (req, res) => {
 };
 
 const activeAccount = (req, res) => {
-  const user = req.body;
+  const { email, status } = req.body;
   let query = "update user set status=? where email=?";
-  connection.query(query, [user.status, user.email], (err, results) => {
+  connection.query(query, [status, email], (err, results) => {
     if (!err) {
       if (results.affectedRows === 0) {
         return res.status(404).json({ message: "User email does not exist" });
@@ -138,29 +138,25 @@ const checkToken = (req, res) => {
 };
 
 const changePassword = (req, res) => {
-  const user = req.body;
+  const { oldPassword, newPassword } = req.body;
   const email = res.locals.email;
   let query = "select * from user where email=? and password=?";
-  connection.query(query, [email, user.oldPassword], (err, results) => {
+  connection.query(query, [email, oldPassword], (err, results) => {
     if (!err) {
       if (results[0]?.length <= 0 || !results[0]) {
         return res.status(401).json({ message: "Incorrect old password." });
       }
-      if (results[0].password === user.oldPassword) {
+      if (results[0].password === oldPassword) {
         query = "update user set password=? where email=?";
-        connection.query(
-          query,
-          [user.newPassword, email],
-          (error, _results) => {
-            if (!error) {
-              return res
-                .status(200)
-                .json({ message: "Password updated successfully" });
-            } else {
-              return res.status(500).json(error);
-            }
+        connection.query(query, [newPassword, email], (error, _results) => {
+          if (!error) {
+            return res
+              .status(200)
+              .json({ message: "Password updated successfully" });
+          } else {
+            return res.status(500).json(error);
           }
-        );
+        });
       } else {
         return res
           .status(401)
