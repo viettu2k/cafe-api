@@ -12,5 +12,6 @@ router.post("/add", authenticateToken, checkRole, addProduct);
 
 router.get("/get", authenticateToken, getProducts);
 router.get("/getByCategory/:id", authenticateToken, getByCategoryId);
+router.get("/getById/:id", authenticateToken, getByCategoryId);
 
 module.exports = router;
