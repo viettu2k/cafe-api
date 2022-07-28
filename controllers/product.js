@@ -29,17 +29,16 @@ const getProducts = (req, res) => {
   });
 };
 
-const updateCategory = (req, res, next) => {
-  let { name, id } = req.body;
-  let query = "update category set name=? where id=?";
-  connection.query(query, [name, id], (err, results) => {
+const getByCategoryId = (req, res) => {
+  const { id } = req.params;
+  let query = "select * from product where categoryId = ? and status = 'true'";
+  connection.query(query, [id], (err, results) => {
     if (!err) {
-      if (results.affectedRow === 0) {
-        return res.status(404).json({ message: "Category is does not found" });
-      }
-      return res.status(200).json({ message: "Category updated successfully" });
+      return res.status(200).json(results);
+    } else {
+      return res.status(500).json(err);
     }
   });
 };
 
-module.exports = { addProduct, getProducts, updateCategory };
+module.exports = { addProduct, getProducts, getByCategoryId };
