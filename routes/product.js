@@ -8,11 +8,13 @@ const {
   getByCategoryId,
   updateProduct,
   deleteProduct,
+  updateStatus,
 } = require("../controllers/product");
 
 router.post("/add", authenticateToken, checkRole, addProduct);
 
 router.patch("/update", authenticateToken, checkRole, updateProduct);
+router.patch("/updateStatus", authenticateToken, checkRole, updateStatus);
 
 router.get("/get", authenticateToken, getProducts);
 router.get("/getByCategory/:id", authenticateToken, getByCategoryId);
