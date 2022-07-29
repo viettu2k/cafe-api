@@ -107,4 +107,33 @@ const getPDF = (req, res) => {
   }
 };
 
-module.exports = { generateReport, getPDF };
+const getBills = (req, res) => {
+  let query = "select * from bill order by id desc";
+  connection.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json(results);
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};
+
+const deleteBill = (req, res) => {
+  const id = req.params.id;
+  let query = "delete from bill where id = ?";
+  connection.query(query, [id], (err, results) => {
+    if (!err) {
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          message: "Bill does not found",
+        });
+      }
+
+      return res.status(200).json({ message: "Bill deleted successfully" });
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+};
+
+module.exports = { generateReport, getPDF, getBills, deleteBill };
