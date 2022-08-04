@@ -18,7 +18,7 @@ const register = (req, res) => {
             if (!error) {
               return res
                 .status(200)
-                .json({ massage: "User created successfully" });
+                .json({ message: "User created successfully" });
             } else {
               return res.status(500).json(error);
             }
