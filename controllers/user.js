@@ -35,7 +35,7 @@ const register = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-  let query = "select email,password,status from user where email=?";
+  let query = "select email, password, status, role from user where email=?";
   connection.query(query, [email], (err, results) => {
     if (!err) {
       if (results[0]?.length <= 0 || results[0]?.password !== password) {
