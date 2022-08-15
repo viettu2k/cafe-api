@@ -9,6 +9,7 @@ const {
   updateProduct,
   deleteProduct,
   updateStatus,
+  getById,
 } = require("../controllers/product");
 
 router.post("/add", authenticateToken, checkRole, addProduct);
@@ -18,7 +19,7 @@ router.patch("/update-status", authenticateToken, checkRole, updateStatus);
 
 router.get("/get", authenticateToken, getProducts);
 router.get("/getByCategory/:id", authenticateToken, getByCategoryId);
-router.get("/getById/:id", authenticateToken, getByCategoryId);
+router.get("/getById/:id", authenticateToken, getById);
 
 router.delete("/delete/:id", authenticateToken, checkRole, deleteProduct);
 
