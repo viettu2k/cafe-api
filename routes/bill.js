@@ -9,12 +9,12 @@ const {
   deleteBill,
 } = require("../controllers/bill");
 
-router.post("/generateReport", authenticateToken, checkRole, generateReport);
-router.post("/getPDF", authenticateToken, checkRole, getPDF);
+router.post("/generate-report", authenticateToken, checkRole, generateReport);
+router.post("/get-pdf", authenticateToken, checkRole, getPDF);
 
 // router.patch("/update", authenticateToken, checkRole, updateCategory);
 
-router.get("/getBills", authenticateToken, getBills);
+router.get("/get-bills", authenticateToken, getBills);
 
 router.delete("/delete/:id", authenticateToken, checkRole, deleteBill);
 

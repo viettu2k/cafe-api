@@ -45,11 +45,11 @@
         <td><%= product.category %></td>
         <td><%= product.quantity %></td>
         <td><%= product.price %></td>
-        <td><%= product.subTotal %></td>
+        <td><%= product.price * product.quantity %></td>
       </tr>
       <% }); %> <% } %>
     </table>
-    <h3>Toal: <%= total %></h3>
+    <h3>Toal: <%= totalAmount %></h3>
     <h3>Thank you for visting. Please visit again!!!</h3>
   </body>
 </html>

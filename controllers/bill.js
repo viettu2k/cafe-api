@@ -7,7 +7,7 @@ const uuid = require("uuid");
 
 const generateReport = (req, res) => {
   const generateUuid = uuid.v1();
-  const { name, email, contact, paymentMethod, total, productDetails } =
+  const { name, email, contact, paymentMethod, totalAmount, productDetails } =
     req.body;
   const productDetailsReport = JSON.parse(productDetails);
   let query =
@@ -20,7 +20,7 @@ const generateReport = (req, res) => {
       email,
       contact,
       paymentMethod,
-      total,
+      totalAmount,
       productDetails,
       res.locals.email,
     ],
@@ -34,7 +34,7 @@ const generateReport = (req, res) => {
             email,
             contact,
             paymentMethod,
-            total,
+            totalAmount,
           },
           (error, data) => {
             if (!error) {
@@ -53,7 +53,6 @@ const generateReport = (req, res) => {
                   }
                 );
             } else {
-              console.log(error);
               return res.status(500).json(error);
             }
           }
@@ -66,8 +65,16 @@ const generateReport = (req, res) => {
 };
 
 const getPDF = (req, res) => {
-  const { name, email, contact, paymentMethod, total, productDetails, uuid } =
-    req.body;
+  const {
+    name,
+    email,
+    contact,
+    paymentMethod,
+    totalAmount,
+    productDetails,
+    uuid,
+  } = req.body;
+
   const pdfPath = `./generated_pdf/${uuid}.pdf`;
   if (fs.existsSync(pdfPath)) {
     res.contentType("application/pdf");
@@ -82,7 +89,7 @@ const getPDF = (req, res) => {
         email,
         contact,
         paymentMethod,
-        total,
+        totalAmount,
       },
       (error, data) => {
         if (!error) {
