@@ -3,10 +3,10 @@ const ejs = require("ejs");
 const pdf = require("html-pdf");
 const path = require("path");
 const fs = require("fs");
-const uuid = require("uuid");
+const _uuid = require("uuid");
 
 const generateReport = (req, res) => {
-  const generateUuid = uuid.v1();
+  const generateUuid = _uuid.v1();
   const { name, email, contact, paymentMethod, totalAmount, productDetails } =
     req.body;
   const productDetailsReport = JSON.parse(productDetails);
@@ -65,6 +65,7 @@ const generateReport = (req, res) => {
 };
 
 const getPDF = (req, res) => {
+  const generateUuid = _uuid.v1();
   const {
     name,
     email,
